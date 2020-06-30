@@ -1,49 +1,49 @@
 /**
- * 
+ *
  * Manipulating the DOM exercise.
  * Exercise programmatically builds navigation,
  * scrolls to anchors from navigation,
  * and highlights section in viewport upon scrolling.
- * 
+ *
  * Dependencies: None
- * 
+ *
  * JS Version: ES2015/ES6
- * 
+ *
  * JS Standard: ESlint
- * 
+ *
 */
 
 /**
  * Define Global Variables
- * 
+ *
 */
 
 const sectionList = document.querySelectorAll('section');
 
 /**
  * End Global Variables
- * Start Helper Functions
- * 
+ * Start Helper consts
+ *
 */
 
-function isNearTop(section){
+const isNearTop = (section) => {
 	const sectionSize = section.getBoundingClientRect();
 	return (
 		sectionSize.top >= -250 &&
 		sectionSize.top <= 400
 	);
-}
+};
 
 
 
 /**
- * End Helper Functions
- * Begin Main Functions
- * 
+ * End Helper consts
+ * Begin Main consts
+ *
 */
 
 // build the nav
-function navBuild(){
+const navBuild = () => {
 	const navFrag = document.createDocumentFragment();
 	for(let i = 1; i <= sectionList.length; i++){
 		const newA = document.createElement('a');
@@ -56,41 +56,55 @@ function navBuild(){
 		newA.appendChild(newLi);
 		navFrag.appendChild(newA);
 	}
-	
+
 	document.getElementById('navbar__list').appendChild(navFrag);
-}
+};
 
 // Add class 'active' to section when near top of viewport
 
-function setActive(){
+const setActive = () => {
 	for(let i = 1; i <= sectionList.length; i++){
 		const section = document.getElementById('section'+[i]);
 		const navEl = document.getElementById('navlink' + i);
 		if(isNearTop(section)){
 			section.classList.add('active');
-			navEl.classList.add('nav__active');			
+			navEl.classList.add('nav__active');
 		}
 		else if(!isNearTop(section)){
 			section.classList.remove('active');
 			navEl.classList.remove('nav__active');
 		}
 	}
-}
+};
 
 
 // Scroll to anchor ID using scrollTO event
 
+const handleClick = (e) => {
+	event.preventDefault();
+	//make sure click is on a nav element
+	if(e.target.tagName === 'LI' || e.target.tagName === 'A'){
+		const section = document.getElementById(e.target.textContent);
+		const scrollToY = section.getBoundingClientRect().y + window.scrollY;
+		window.scrollTo({
+			top: scrollToY,
+			behavior: 'smooth'
+		});
+	}
+};
+
 
 /**
- * End Main Functions
+ * End Main consts
  * Begin Events
- * 
+ *
 */
 
-// Build menu 
+// Build menu
 navBuild();
 
 // Scroll to section on link click
+document.getElementsByTagName('nav')[0].addEventListener('click', handleClick);
 
 // Set sections as active
 
