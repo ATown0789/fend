@@ -19,20 +19,19 @@
 */
 
 const sectionList = document.querySelectorAll('section');
+
 /**
  * End Global Variables
  * Start Helper Functions
  * 
 */
 
-function isNearTop(section) {
-  const sectionSize = section.getBoundingClientRect();
-  const html = document.documentElement;
-  return (
-    sectionSize.top >= 0 &&
-	sectionSize.top <= 100 &&
-    sectionSize.bottom <= (window.innerHeight || html.clientHeight))
-  );
+function isNearTop(section){
+	const sectionSize = section.getBoundingClientRect();
+	return (
+		sectionSize.top >= -250 &&
+		sectionSize.top <= 400
+	);
 }
 
 
@@ -44,14 +43,15 @@ function isNearTop(section) {
 */
 
 // build the nav
-function navBuild() {
+function navBuild(){
 	const navFrag = document.createDocumentFragment();
-	for(let i = 0; i < sectionList.length; i++){
+	for(let i = 1; i <= sectionList.length; i++){
 		const newA = document.createElement('a');
 		const newLi = document.createElement('li');
-		const elId = sectionList[i].id;
+		const elId = sectionList[i-1].id;
 		newA.setAttribute('class', 'menu__link');
-		newA.setAttribute('href','#'+ elId)
+		newA.setAttribute('href', '#'+ elId);
+		newA.setAttribute('id', 'navlink' + i);
 		newLi.textContent = elId;
 		newA.appendChild(newLi);
 		navFrag.appendChild(newA);
@@ -62,6 +62,20 @@ function navBuild() {
 
 // Add class 'active' to section when near top of viewport
 
+function setActive(){
+	for(let i = 1; i <= sectionList.length; i++){
+		const section = document.getElementById('section'+[i]);
+		const navEl = document.getElementById('navlink' + i);
+		if(isNearTop(section)){
+			section.classList.add('active');
+			navEl.classList.add('nav__active');			
+		}
+		else if(!isNearTop(section)){
+			section.classList.remove('active');
+			navEl.classList.remove('nav__active');
+		}
+	}
+}
 
 
 // Scroll to anchor ID using scrollTO event
@@ -79,5 +93,7 @@ navBuild();
 // Scroll to section on link click
 
 // Set sections as active
+
+window.addEventListener('scroll', setActive);
 
 

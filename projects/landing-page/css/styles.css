@@ -211,6 +211,7 @@ section.active .landing__container::after {
     animation: rotate 5s linear 0s infinite forwards reverse;
 }
 
+
 /* Section Active Styles Keyframe Animations */
 @keyframes rotate {
 	from {
@@ -223,4 +224,13 @@ section.active .landing__container::after {
 		           translate(-1em) 
 		           rotate(-360deg);
 	}
+}
+
+/* Nav Active Styles */
+
+.nav__active {
+    background: #333;
+    color: #fff !important;
+    transition: ease 1s all;
+	cursor: pointer;
 }
