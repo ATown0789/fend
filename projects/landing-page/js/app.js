@@ -19,6 +19,8 @@
 */
 
 const sectionList = document.querySelectorAll('section');
+const scrollButton = document.getElementById('scroll__top');
+let prevScrollPos = window.pageYOffset;
 
 /**
  * End Global Variables
@@ -41,6 +43,20 @@ const isNearTop = (section) => {
  * Begin Main consts
  *
 */
+
+
+//hide/show nav on scroll down/up
+
+const hideNav = () => {
+	const nav = document.getElementsByTagName('nav')[0];
+		let curScrollPos = window.pageYOffset;
+		if (prevScrollPos > curScrollPos) {
+			nav.style.top = '0';
+		} else {
+			nav.style.top = '-60px';
+		}
+		prevScrollPos = curScrollPos;
+}
 
 // build the nav
 const navBuild = () => {
@@ -93,6 +109,27 @@ const handleClick = (e) => {
 	}
 };
 
+// Show ScrollTop button
+
+const scrollTop = () => {
+	if(window.pageYOffset > 450) {
+		scrollButton.style.display = 'flex';
+	}
+	else if(window.pageYOffset <= 450) {
+		scrollButton.style.display = 'none';
+	}
+}
+
+//Scroll on click
+
+const scrollClick = () => {
+	window.scroll({
+		top: 0, 
+		left: 0, 
+		behavior: 'smooth' 
+	});
+}
+
 
 /**
  * End Main consts
@@ -106,8 +143,15 @@ navBuild();
 // Scroll to section on link click
 document.getElementsByTagName('nav')[0].addEventListener('click', handleClick);
 
-// Set sections as active
+// Scroll top on scroll__top click
+scrollButton.addEventListener('click', scrollClick)
 
-window.addEventListener('scroll', setActive);
+/* Set sections as active
+hide menu on scroll down
+show scroll top button */
 
-
+window.addEventListener('scroll', () => {
+	setActive();
+	hideNav();
+	scrollTop();
+});
